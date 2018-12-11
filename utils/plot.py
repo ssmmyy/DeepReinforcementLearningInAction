@@ -12,7 +12,7 @@ def plot(frame_idx, rewards, losses, sigma, elapsed_time, nstep=1, name="DQN"):
     clear_output(True)
     plt.figure(figsize=(20, 5))
     plt.subplot(131)
-    plt.title('name: %s. step: %d. frame %s. reward: %s. time: %s' % (
+    plt.title('%s. step: %d. frame %s. reward: %s. time: %s' % (
         name, nstep, frame_idx, np.mean(rewards[-10:]), elapsed_time))
     plt.plot(rewards)
     if losses:
@@ -29,7 +29,7 @@ def plot(frame_idx, rewards, losses, sigma, elapsed_time, nstep=1, name="DQN"):
 def save_plot(frame_idx, rewards, losses, sigma, elapsed_time, nstep=1, name="DQN"):
     plt.figure(figsize=(20, 5))
     plt.subplot(131)
-    plt.title('name: %s. step: %d. frame %s. reward: %s. time: %s' % (
+    plt.title('%s. step: %d. frame %s. reward: %s. time: %s' % (
         name, nstep, frame_idx, np.mean(rewards[-10:]), elapsed_time))
     plt.plot(rewards)
     if losses:

@@ -71,7 +71,7 @@ for frame_idx in range(1, max_frames + 1):
         minute = int((remain_time - hour * 3600) / 60)
         second = remain_time - hour * 3600 - minute * 60
         avg_reward = np.mean(model.rewards[-10:])
-        print("第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
+        print("step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (config.N_STEPS,frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
         process_time = timer()
 model.save_weight(model_name="DQN_" + str(model.nsteps) + "STEP")
 env.close()
