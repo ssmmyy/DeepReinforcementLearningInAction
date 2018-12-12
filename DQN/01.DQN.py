@@ -46,9 +46,12 @@ for frame_idx in range(1, max_frames + 1):
         observation = env.reset()
         model.save_reward(episode_reward)
         episode_reward = 0
-        if np.mean(model.rewards[-10:]) > 19:
+        if np.mean(model.rewards[-10:]) > 20:
             plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
                  timedelta(seconds=int(timer() - start)))
+            save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
+                      timedelta(seconds=int(timer() - start)), name="DQN")
+            print("达到20提前结束，结束轮次,", frame_idx)
             break
 
     # 每一万次迭代绘制训练信息

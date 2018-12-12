@@ -61,8 +61,7 @@ class Model(BaseAgent):
         self.declare_memory()
 
         # 场景步长，DQN_NSTEP模型所用
-        # self.nsteps = config.N_STEPS
-        self.nsteps = 3
+        self.nsteps = config.N_STEPS
         # 场景状态池，DQN_NSTEP模型所用
         self.nstep_buffer = list()
 

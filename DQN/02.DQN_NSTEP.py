@@ -47,10 +47,14 @@ for frame_idx in range(1, max_frames + 1):
         observation = env.reset()
         model.save_reward(episode_reward)
         episode_reward = 0
-        # if np.mean(model.rewards[-10:]) > 19:
-        #     plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
-        #          timedelta(seconds=int(timer() - start)))
-        #     break
+        if np.mean(model.rewards[-10:]) > 20:
+            plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
+                 timedelta(seconds=int(timer() - start)))
+            save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
+                      timedelta(seconds=int(timer() - start)),
+                      nstep=model.nsteps, name="DQN")
+            print("达到20提前结束，结束轮次,", frame_idx)
+            break
 
     # 每一万次迭代绘制训练信息
     if frame_idx % config.polt_num == 0:
@@ -71,7 +75,7 @@ for frame_idx in range(1, max_frames + 1):
         minute = int((remain_time - hour * 3600) / 60)
         second = remain_time - hour * 3600 - minute * 60
         avg_reward = np.mean(model.rewards[-10:])
-        print("step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (config.N_STEPS,frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
+        print("step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (model.nsteps,frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
         process_time = timer()
 model.save_weight(model_name="DQN_" + str(model.nsteps) + "STEP")
 env.close()
