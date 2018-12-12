@@ -42,7 +42,7 @@ class Config:
         self.MAX_FRAMES = 1000000
 
         # DQN_NSTEP所用，场景步长
-        self.N_STEPS = 1
+        self.N_STEPS = 3
 
         # 每次输出plot的轮次
         self.polt_num = 50000

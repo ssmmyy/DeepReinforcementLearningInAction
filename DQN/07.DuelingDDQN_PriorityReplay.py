@@ -34,6 +34,10 @@ max_frames = config.MAX_FRAMES
 process_count = int(max_frames / 2000)
 # 上次输出处理时间
 process_time = 0
+# 输出到log文件中
+log_file = config.log_dir + agent_name + "_step_" + str(model.nsteps) + ".txt"
+with open(log_file, "w", encoding='utf-8') as lf:
+    lf.close()
 for frame_idx in range(1, max_frames + 1):
     epsilon = config.epsilon_by_frame(frame_idx)
     # print(type(epsilon))
@@ -77,7 +81,12 @@ for frame_idx in range(1, max_frames + 1):
         minute = int((remain_time - hour * 3600) / 60)
         second = remain_time - hour * 3600 - minute * 60
         avg_reward = np.mean(model.rewards[-10:])
-        print("step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (model.nsteps,frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
+        log_content = "step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (
+            model.nsteps, frame_idx, finish_rate * 100, avg_reward, hour, minute, second)
+        print(log_content)
+        with open(log_file, "a", encoding='utf-8') as lf:
+            lf.write(log_content + "\n")
+            lf.close()
         process_time = timer()
 model.save_weight(model_name="DuelingDDQNPR_" + str(model.nsteps) + "STEP")
 env.close()
