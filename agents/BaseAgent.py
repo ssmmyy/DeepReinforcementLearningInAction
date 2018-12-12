@@ -2,12 +2,9 @@ import numpy as np
 import pickle
 import os.path
 import torch as t
-import torch.optim as optim
-
 from utils.hyperparameters import Config
 
 cfg = Config()
-
 
 class BaseAgent(object):
     def __init__(self):

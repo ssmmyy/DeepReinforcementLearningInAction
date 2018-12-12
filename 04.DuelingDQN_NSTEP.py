@@ -2,8 +2,6 @@ import numpy as np
 from timeit import default_timer as timer
 
 from datetime import timedelta
-import math
-
 from agents.DuelingDQN_NSTEP import Model
 from utils.hyperparameters import Config
 from utils.plot import plot, save_plot

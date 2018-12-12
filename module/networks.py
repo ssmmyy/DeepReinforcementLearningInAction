@@ -4,7 +4,9 @@ import torch.nn.functional as F
 
 from module.layers import NoisyLinear
 from module.network_bodies import SimpleBody
-
+import os
+import sys
+sys.path.append(os.path.abspath("."))
 device = t.device("cuda" if t.cuda.is_available() else "cpu")
 
 

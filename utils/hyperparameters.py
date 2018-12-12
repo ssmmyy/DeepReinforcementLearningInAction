@@ -1,6 +1,8 @@
 import torch as t
 import math
-
+import os
+import sys
+sys.path.append(os.path.abspath("."))
 
 class Config:
     def __init__(self):
