@@ -46,8 +46,12 @@ class Config:
 
         # 每次输出plot的轮次
         self.polt_num = 50000
+        # 保存图像地址
         self.save_plot_path = "/home/cbd109/Users/smy/result/DRL/DQN/"
         self.save_plot_num = 100000
+        # 日志目录
+        self.log_dir = self.save_plot_path + "log/"
+
 
         # PriorityReplay所用
         # alpha值，表示优先级大小对取样概率的重要性

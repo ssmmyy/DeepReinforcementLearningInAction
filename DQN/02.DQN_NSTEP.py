@@ -9,6 +9,8 @@ from utils.hyperparameters import Config
 from utils.plot import plot, save_plot
 from utils.wrappers import wrap_pytorch, make_atari, wrap_deepmind
 
+# 智能体名称
+agent_name = "DQN"
 # 获取配置文件
 config = Config()
 # 记录开始时间
@@ -32,6 +34,9 @@ max_frames = config.MAX_FRAMES
 process_count = int(max_frames / 2000)
 # 上次输出处理时间
 process_time = 0
+log_file = config.log_dir + agent_name + "_step_" + str(model.nsteps) + ".txt"
+with open(log_file, "w", encoding='utf-8') as lf:
+    lf.close()
 for frame_idx in range(1, max_frames + 1):
     epsilon = config.epsilon_by_frame(frame_idx)
     # print(type(epsilon))
@@ -52,20 +57,20 @@ for frame_idx in range(1, max_frames + 1):
                  timedelta(seconds=int(timer() - start)))
             save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
                       timedelta(seconds=int(timer() - start)),
-                      nstep=model.nsteps, name="DQN")
+                      nstep=model.nsteps, name=agent_name)
             print("达到20提前结束，结束轮次,", frame_idx)
             break
 
     # 每一万次迭代绘制训练信息
     if frame_idx % config.polt_num == 0:
         plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag, timedelta(seconds=int(timer() - start)),
-             nstep=model.nsteps,name="DQN")
+             nstep=model.nsteps, name=agent_name)
 
     # 每save_polt_num保存图像结果
     if frame_idx % config.save_plot_num == 0:
         save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
                   timedelta(seconds=int(timer() - start)),
-                  nstep=model.nsteps,name="DQN")
+                  nstep=model.nsteps, name=agent_name)
 
     # 输出进度与剩余时间
     if frame_idx % process_count == 0:
@@ -75,8 +80,13 @@ for frame_idx in range(1, max_frames + 1):
         minute = int((remain_time - hour * 3600) / 60)
         second = remain_time - hour * 3600 - minute * 60
         avg_reward = np.mean(model.rewards[-10:])
-        print("step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (model.nsteps,frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
+        log_content = "step=%d 第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (
+        model.nsteps, frame_idx, finish_rate * 100, avg_reward, hour, minute, second)
+        print(log_content)
+        with open(log_file, "a", encoding='utf-8') as lf:
+            lf.write(log_content + "\n")
+            lf.close()
         process_time = timer()
-model.save_weight(model_name="DQN_" + str(model.nsteps) + "STEP")
+model.save_weight(model_name=agent_name + "_" + str(model.nsteps) + "STEP")
 env.close()
 print("输出完毕")

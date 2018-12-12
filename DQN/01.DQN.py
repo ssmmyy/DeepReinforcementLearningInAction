@@ -9,6 +9,8 @@ from utils.hyperparameters import Config
 from utils.plot import plot, save_plot
 from utils.wrappers import wrap_pytorch, make_atari, wrap_deepmind
 
+# 智能体名称
+agent_name = "DQN"
 # 获取配置文件
 config = Config()
 # 记录开始时间
@@ -48,9 +50,9 @@ for frame_idx in range(1, max_frames + 1):
         episode_reward = 0
         if np.mean(model.rewards[-10:]) > 20:
             plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
-                 timedelta(seconds=int(timer() - start)))
+                 timedelta(seconds=int(timer() - start)),name=agent_name)
             save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
-                      timedelta(seconds=int(timer() - start)), name="DQN")
+                      timedelta(seconds=int(timer() - start)), name=agent_name)
             print("达到20提前结束，结束轮次,", frame_idx)
             break
 
@@ -61,7 +63,7 @@ for frame_idx in range(1, max_frames + 1):
     # 每save_polt_num保存图像结果
     if frame_idx % config.save_plot_num == 0:
         save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
-                  timedelta(seconds=int(timer() - start)), name="DQN")
+                  timedelta(seconds=int(timer() - start)), name=agent_name)
 
     # 输出进度与剩余时间
     if frame_idx % process_count == 0:
@@ -70,7 +72,9 @@ for frame_idx in range(1, max_frames + 1):
         hour = int(remain_time / 3600)
         minute = int((remain_time - hour * 3600) / 60)
         second = remain_time - hour * 3600 - minute * 60
+        avg_reward = np.mean(model.rewards[-10:])
         print("第%d轮 训练完成%.2f%%, avg_reward= %.1f, 剩余 %d小时 %d分 %d秒" % (frame_idx,finish_rate * 100, avg_reward, hour, minute, second))
         process_time = timer()
-model.save_weight()
+model.save_weight(model_name=agent_name)
 env.close()
+print("输出完毕")

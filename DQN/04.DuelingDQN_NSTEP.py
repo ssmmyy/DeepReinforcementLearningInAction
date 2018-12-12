@@ -9,6 +9,8 @@ from utils.hyperparameters import Config
 from utils.plot import plot, save_plot
 from utils.wrappers import wrap_pytorch, make_atari, wrap_deepmind
 
+# 智能体名称
+agent_name = "DuelingDQN"
 # 获取配置文件
 config = Config()
 # 记录开始时间
@@ -55,13 +57,13 @@ for frame_idx in range(1, max_frames + 1):
     # 每polt_num次迭代绘制训练信息
     if frame_idx % config.polt_num == 0:
         plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag, timedelta(seconds=int(timer() - start)),
-             nstep=model.nsteps,name="DuelingDQN")
+             nstep=model.nsteps,name=agent_name)
 
     # 每save_polt_num保存图像结果
     if frame_idx % config.save_plot_num == 0:
         save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
                   timedelta(seconds=int(timer() - start)),
-                  nstep=model.nsteps,name="DuelingDQN")
+                  nstep=model.nsteps,name=agent_name)
 
     # 输出进度与剩余时间
     if frame_idx % process_count == 0:
