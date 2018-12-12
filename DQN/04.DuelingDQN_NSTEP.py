@@ -53,10 +53,19 @@ for frame_idx in range(1, max_frames + 1):
         observation = env.reset()
         model.save_reward(episode_reward)
         episode_reward = 0
-        # if np.mean(model.rewards[-10:]) > 19:
-        #     plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
-        #          timedelta(seconds=int(timer() - start)))
-        #     break
+        if np.mean(model.rewards[-10:]) > 19:
+            plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
+                 timedelta(seconds=int(timer() - start)))
+            log_content = "达到20提前结束，结束轮次," + str(frame_idx)
+            save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
+                      timedelta(seconds=int(timer() - start)),
+                      nstep=model.nsteps, name=agent_name)
+            log_content = "达到20提前结束，结束轮次," + str(frame_idx)
+            print(log_content)
+            with open(log_file, "a", encoding='utf-8') as lf:
+                lf.write(log_content + "\n")
+                lf.close()
+            break
 
     # 每polt_num次迭代绘制训练信息
     if frame_idx % config.polt_num == 0:

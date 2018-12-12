@@ -57,7 +57,11 @@ for frame_idx in range(1, max_frames + 1):
                  timedelta(seconds=int(timer() - start)), name=agent_name)
             save_plot(frame_idx, model.rewards, model.losses, model.sigma_parameter_mag,
                       timedelta(seconds=int(timer() - start)), name=agent_name)
-            print("达到20提前结束，结束轮次,", frame_idx)
+            log_content = "达到20提前结束，结束轮次," + str(frame_idx)
+            print(log_content)
+            with open(log_file, "a", encoding='utf-8') as lf:
+                lf.write(log_content + "\n")
+                lf.close()
             break
 
     # 每一万次迭代绘制训练信息

@@ -40,5 +40,5 @@ def save_plot(frame_idx, rewards, losses, sigma, elapsed_time, nstep=1, name="DQ
         plt.subplot(133)
         plt.title('noisy param magnitude')
         plt.plot(sigma)
-    plt.savefig("%sname: %s. step: %d. frame %s." % (cfg.save_plot_path,
+    plt.savefig("%s%s. step: %d. frame %s." % (cfg.save_plot_path,
         name, nstep, frame_idx))
